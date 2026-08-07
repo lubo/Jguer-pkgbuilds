@@ -1,7 +1,8 @@
-#!/usr/bin/bash
+#!/bin/bash
+set -euo pipefail
 
 # Usage Function
-function usage() {
+usage() {
   cat <<_EOT_
 Usage:
   $0 version ...
@@ -11,12 +12,11 @@ _EOT_
   exit 1
 }
 
-if [ $# = 0 ]; then
+if [ $# -eq 0 ]; then
   usage
 fi
 
 newV="$1"
-set -e
 echo "Processing yay"
 (
   cd yay || exit

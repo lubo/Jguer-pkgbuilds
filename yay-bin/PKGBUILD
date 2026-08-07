@@ -1,5 +1,5 @@
 # Maintainer: Jguer <pkgbuilds at jguer.space>
-pkgname=yay-bin
+pkgname="yay-bin"
 pkgver=13.0.1
 pkgrel=1
 pkgdesc="Yet another yogurt. Pacman wrapper and AUR helper written in go. Pre-compiled."
@@ -14,7 +14,7 @@ optdepends=(
   'sudo: privilege elevation'
   'doas: privilege elevation'
 )
-provides=('yay')
+provides=("yay=${pkgver}")
 conflicts=('yay')
 
 source_x86_64=("https://github.com/Jguer/yay/releases/download/v${pkgver}/${pkgname/-bin/}_${pkgver}_x86_64.tar.gz")
@@ -35,8 +35,10 @@ package() {
   install -Dm644 "${_output}/zsh" "${pkgdir}/usr/share/zsh/site-functions/_yay"
   install -Dm644 "${_output}/fish" "${pkgdir}/usr/share/fish/vendor_completions.d/yay.fish"
 
-  LANGS="ca cs de en es eu fr_FR he id it_IT ja ko pl_PL pt_BR pt ru_RU ru sv tr uk zh_CN zh_TW"
-  for lang in ${LANGS}; do
-    install -Dm644 "${_output}/${lang}.mo" "${pkgdir}/usr/share/locale/${lang}/LC_MESSAGES/yay.mo"
+  for _mo in "${_output}"/*.mo; do
+    [ -e "$_mo" ] || continue
+    _lang="${_mo##*/}"
+    _lang="${_lang%.mo}"
+    install -Dm644 "$_mo" "${pkgdir}/usr/share/locale/${_lang}/LC_MESSAGES/yay.mo"
   done
 }

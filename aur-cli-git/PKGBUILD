@@ -4,12 +4,12 @@ _pkgname="aur-cli"
 pkgver=1.0.1.r3.g11059e0
 pkgrel=1
 pkgdesc="Client for simple AUR queries"
-arch=('i686' 'pentium4' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
+arch=('i686' 'pentium4' 'x86_64' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/Jguer/aur"
-license=('GPL3')
+license=('GPL-3.0-only')
 makedepends=('go' 'git')
 conflicts=('aur-cli')
-provides=('aur-cli')
+provides=("aur-cli=${pkgver}")
 source=("aur-cli::git+https://github.com/Jguer/aur.git")
 sha256sums=("SKIP")
 
@@ -18,7 +18,7 @@ pkgver() {
     git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
-prepare(){
+prepare() {
     cd "$srcdir/$_pkgname"
     mkdir -p build
 }
@@ -41,5 +41,5 @@ check() {
 
 package() {
     cd "$srcdir/$_pkgname"
-    install -Dm755 build/$_pkgname "$pkgdir"/usr/bin/$_pkgname
+    install -Dm755 "build/$_pkgname" "$pkgdir/usr/bin/$_pkgname"
 }
